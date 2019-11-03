@@ -6,7 +6,7 @@
 /*   By: srouhe <srouhe@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/03 14:32:53 by srouhe            #+#    #+#             */
-/*   Updated: 2019/11/03 18:01:19 by srouhe           ###   ########.fr       */
+/*   Updated: 2019/11/03 18:14:27 by srouhe           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static	uint16_t	get_bits(char *binary)
 		if (*binary++ == '#')
 			total += 1;
 	}
-	write(1, "input bits:\n", 12);
+	write(1, "shifted bits:\n", 14);
 	total = shift_bits(total);
 	ft_print_bits(total, 16);
 	write(1, "\n", 1);
@@ -64,7 +64,7 @@ static	uint16_t	get_bits(char *binary)
 t_list				*read_blocks(const int fd)
 {
 	char		buf[BUF_SIZE + 1];
-	int			index;
+	int			i;
 	int			n_read;
 	uint16_t	bits;
 	t_list		*blocks;
@@ -73,19 +73,19 @@ t_list				*read_blocks(const int fd)
 
 	blocks = ft_lstnew(0, 0);
 	current = blocks;
-	index = 0;
-	while (index < 26 && (n_read = read(fd, buf, BUF_SIZE)) > 0)
+	i = 0;
+	while (i < 26 && (n_read = read(fd, buf, BUF_SIZE)) > 0)
 	{
 		buf[n_read] = '\0';
 		printf("buffer:\n%s\n", buf);
 		bits = get_bits(buf);
-		current->content = new_block('A' + index, bits);
+		current->content = new_block('A' + i, bits); /* validate needed here */
 		test = current->content;
-		printf("current bits: %d index: %c\n\n", test->bits, test->id);
+		printf("bits as decimal: %d index: %c\n\n", test->bits, test->id);
 		current->content_size = sizeof(current->content);
 		current->next = ft_lstnew(0, 0);
 		current = current->next;
-		index++;
+		i++;
 	}
 	return (blocks);
 }
@@ -93,16 +93,18 @@ t_list				*read_blocks(const int fd)
 int					main(int ac, char **av)
 {
 	int		fd;
+	t_list	*blocks;
 	
 	if (ac != 2)
 	{
-		ft_putendl("usage: ./fillit file");
+		ft_putendl("usage: ./fillit input_file");
 		return (1);
 	}
 	if ((fd = open(av[1], O_RDONLY)) == -1)
 		return (2);
 
-	read_blocks(fd);
+	blocks = read_blocks(fd);
+	/* solve(blocks); */
 	close(fd);
 
 	return (0);

@@ -6,11 +6,11 @@
 #    By: srouhe <srouhe@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/03 14:53:22 by srouhe            #+#    #+#              #
-#    Updated: 2019/11/03 15:39:37 by srouhe           ###   ########.fr        #
+#    Updated: 2019/11/04 14:30:49 by srouhe           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS = main.c
+SRCS = main.c solver.c
 
 OBJ = $(patsubst %.c, %.o, $(SRCS))
 
@@ -23,7 +23,7 @@ FLAGS = -Wall -Werror -Wextra
 all: $(NAME)
 
 $(NAME):
-	@clang $(FLAGS) -I libft/includes -o $(OBJ) -c $(SRCS)
+	@clang -I libft/includes -c $(SRCS)
 	@clang -o $(NAME) $(OBJ) -I libft/includes -L libft/ -lft
 
 clean:

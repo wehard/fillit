@@ -6,17 +6,13 @@
 /*   By: srouhe <srouhe@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/03 14:32:53 by srouhe            #+#    #+#             */
-/*   Updated: 2019/11/03 18:14:27 by srouhe           ###   ########.fr       */
+/*   Updated: 2019/11/04 15:01:42 by srouhe           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <fcntl.h>
-#include <stdlib.h>
 #include "fillit.h"
-#include "libft.h"
-#include <stdio.h>
 
-static	t_block		*new_block(char id, uint16_t bits)
+static	t_block		*new_block(char id, uint64_t bits)
 {
 	t_block		*new;
 	
@@ -26,10 +22,11 @@ static	t_block		*new_block(char id, uint16_t bits)
 	new->bits = bits;
 	new->x = 0;
 	new->y = 0;
+	new->pos = 0;
 	return (new);
 }
 
-static	uint16_t	shift_bits(uint16_t bits)
+static	uint16_t	shift_bits_16(uint16_t bits)
 {
 	while (!(bits & 61440)) /* 1111 0000 0000 0000 || 0xF000 */
 		bits = bits << 4;
@@ -38,16 +35,33 @@ static	uint16_t	shift_bits(uint16_t bits)
 	return (bits);
 }
 
-static	uint16_t	get_bits(char *binary)
+static	uint64_t	shift_bits_64(uint64_t bits)
 {
-	uint16_t total;
+	while (!(bits & 0xFF00000000000000))
+		bits = bits << 8;
+	while (!(bits & 0x8080808000000000))
+		bits = bits << 1;
+	return (bits);
+}
+
+static	uint64_t	get_bits(char *binary) /* Validointi */
+{
+	uint64_t 	total;
+	int			i;
 
 	total = 0;
+	i = 0;
 	while (*binary)
 	{
 		if (*binary == '\n')
 		{
+			i = 0;
 			binary++;
+			while (i < 4)
+			{
+				i++;
+				total *= 2;
+			}
 			continue;
 		}
 		total *= 2;
@@ -55,18 +69,18 @@ static	uint16_t	get_bits(char *binary)
 			total += 1;
 	}
 	write(1, "shifted bits:\n", 14);
-	total = shift_bits(total);
-	ft_print_bits(total, 16);
+	total = shift_bits_64(total);
+	print_map(total);
 	write(1, "\n", 1);
 	return (total);
 }
 
-t_list				*read_blocks(const int fd)
+t_list				*read_blocks(const int fd, int *n_blocks)
 {
 	char		buf[BUF_SIZE + 1];
 	int			i;
 	int			n_read;
-	uint16_t	bits;
+	uint64_t	bits;
 	t_list		*blocks;
 	t_list		*current;
 	t_block		*test;
@@ -79,21 +93,23 @@ t_list				*read_blocks(const int fd)
 		buf[n_read] = '\0';
 		printf("buffer:\n%s\n", buf);
 		bits = get_bits(buf);
-		current->content = new_block('A' + i, bits); /* validate needed here */
+		current->content = new_block('A' + i, bits);
 		test = current->content;
-		printf("bits as decimal: %d index: %c\n\n", test->bits, test->id);
+		printf("bits as decimal: %llu index: %c\n\n", test->bits, test->id);
 		current->content_size = sizeof(current->content);
 		current->next = ft_lstnew(0, 0);
 		current = current->next;
 		i++;
+		*n_blocks += 1;
 	}
 	return (blocks);
 }
 
 int					main(int ac, char **av)
 {
-	int		fd;
-	t_list	*blocks;
+	int			fd;
+	int			n_blocks;
+	t_list		*blocks;
 	
 	if (ac != 2)
 	{
@@ -103,9 +119,8 @@ int					main(int ac, char **av)
 	if ((fd = open(av[1], O_RDONLY)) == -1)
 		return (2);
 
-	blocks = read_blocks(fd);
-	/* solve(blocks); */
+	blocks = read_blocks(fd, &n_blocks);
 	close(fd);
-
+	solve(blocks, n_blocks);
 	return (0);
 }

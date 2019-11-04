@@ -6,7 +6,7 @@
 /*   By: srouhe <srouhe@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/03 14:35:38 by srouhe            #+#    #+#             */
-/*   Updated: 2019/11/03 17:32:15 by srouhe           ###   ########.fr       */
+/*   Updated: 2019/11/04 14:58:14 by srouhe           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,11 @@
 # define BUF_SIZE 21
 
 #include <unistd.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <fcntl.h>
+#include <stdlib.h>
+#include "libft.h"
 
 enum
 {
@@ -36,10 +41,11 @@ enum
 typedef struct		s_block
 {
 	char			id;
-	uint16_t		bits;
+	uint64_t		bits;
+	uint64_t		pos;
 	uint8_t			x;
 	uint8_t			y;
-	uint64_t		pos;
+
 
 }					t_block;
 
@@ -49,5 +55,8 @@ typedef struct		s_map
 	uint64_t		map;
 
 }					t_map;
+
+void				solve(t_list *blocks, int n_blocks);
+void				print_map(uint64_t map);
 
 #endif

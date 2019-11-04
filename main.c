@@ -6,7 +6,7 @@
 /*   By: srouhe <srouhe@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/03 14:32:53 by srouhe            #+#    #+#             */
-/*   Updated: 2019/11/04 16:30:18 by srouhe           ###   ########.fr       */
+/*   Updated: 2019/11/04 18:57:42 by srouhe           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static	uint64_t	shift_bits_64(uint64_t bits)
 	return (bits);
 }
 
-static	uint64_t	get_bits(char *binary) /* Validointi */
+static	uint64_t	get_bits(char *binary)
 {
 	uint64_t 	total;
 	int			i;
@@ -108,7 +108,7 @@ static int	validate_block(uint64_t bits)
 			return (i);
 		i++;
 	}
-	return (0);
+	return (-1);
 }
 
 t_list				*read_blocks(const int fd, int *n_blocks)
@@ -132,7 +132,7 @@ t_list				*read_blocks(const int fd, int *n_blocks)
 		bits = get_bits(buf);
 		if (buf[n_read - 1] != '\n')
 			return (NULL);
-		if (!(g_index = validate_block(bits)))
+		if ((g_index = validate_block(bits)) < 0)
 			return (NULL);
 		current->content = new_block('A' + i, bits, g_valid_blocks[g_index].w, g_valid_blocks[g_index].h);
 

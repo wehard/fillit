@@ -6,11 +6,36 @@
 /*   By: srouhe <srouhe@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/03 14:32:53 by srouhe            #+#    #+#             */
-/*   Updated: 2019/11/04 15:01:42 by srouhe           ###   ########.fr       */
+/*   Updated: 2019/11/04 16:09:14 by srouhe           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
+
+t_vblock_data g_valid_blocks[19] =
+{
+	9259542121117908992ULL,
+	17293822569102704640ULL,
+	13889101250810609664ULL,
+	9259611940106272768ULL, 
+	16176929861514821632ULL,
+	13853142822535823360ULL,
+	2368893403996880896ULL, 
+	13871227589789483008ULL,
+	9286422431637962752ULL, 
+	4629911523169402880ULL, 
+	16149908263750598656ULL,
+	13862079653046386688ULL,
+	4665869951444189184ULL, 
+	6971572223169527808ULL, 
+	9277485601127399424ULL, 
+	9277555969871577088ULL, 
+	16158915463005339648ULL,
+	4665799582700011520ULL, 
+	4674736413210574848ULL 
+};
+
+
 
 static	t_block		*new_block(char id, uint64_t bits)
 {
@@ -28,9 +53,9 @@ static	t_block		*new_block(char id, uint64_t bits)
 
 static	uint16_t	shift_bits_16(uint16_t bits)
 {
-	while (!(bits & 61440)) /* 1111 0000 0000 0000 || 0xF000 */
+	while (!(bits & 0xF000)) /* 1111 0000 0000 0000 || 0xF000 */
 		bits = bits << 4;
-	while (!(bits & 34952)) /* 1000 1000 1000 1000 || 0x8888 */
+	while (!(bits & 0x8888)) /* 1000 1000 1000 1000 || 0x8888 */
 		bits = bits << 1;
 	return (bits);
 }
@@ -71,8 +96,21 @@ static	uint64_t	get_bits(char *binary) /* Validointi */
 	write(1, "shifted bits:\n", 14);
 	total = shift_bits_64(total);
 	print_map(total);
-	write(1, "\n", 1);
 	return (total);
+}
+
+static int			validate_block(uint64_t bits)
+{
+	int i;
+
+	i = 0;
+	while (i < 19)
+	{
+		if (bits == g_valid_blocks[i])
+			return (1);
+		i++;
+	}
+	return (0);
 }
 
 t_list				*read_blocks(const int fd, int *n_blocks)
@@ -93,9 +131,15 @@ t_list				*read_blocks(const int fd, int *n_blocks)
 		buf[n_read] = '\0';
 		printf("buffer:\n%s\n", buf);
 		bits = get_bits(buf);
+		if (buf[n_read - 1] != '\n')
+			return (NULL);
+		if (!validate_block(bits))
+			return (NULL);
 		current->content = new_block('A' + i, bits);
+
 		test = current->content;
 		printf("bits as decimal: %llu index: %c\n\n", test->bits, test->id);
+		
 		current->content_size = sizeof(current->content);
 		current->next = ft_lstnew(0, 0);
 		current = current->next;
@@ -103,6 +147,12 @@ t_list				*read_blocks(const int fd, int *n_blocks)
 		*n_blocks += 1;
 	}
 	return (blocks);
+}
+
+static int			throw_error(char *estr)
+{
+	ft_putstr_fd(estr, 2);
+	return (1);
 }
 
 int					main(int ac, char **av)
@@ -120,6 +170,8 @@ int					main(int ac, char **av)
 		return (2);
 
 	blocks = read_blocks(fd, &n_blocks);
+	if (!blocks)
+		return (throw_error("Block error!"));
 	close(fd);
 	solve(blocks, n_blocks);
 	return (0);

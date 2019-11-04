@@ -6,7 +6,7 @@
 /*   By: srouhe <srouhe@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/03 14:35:38 by srouhe            #+#    #+#             */
-/*   Updated: 2019/11/04 14:58:14 by srouhe           ###   ########.fr       */
+/*   Updated: 2019/11/04 16:08:48 by srouhe           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,13 @@ enum
 	INV_L_ROT_180 = 17600,
 	INV_L_ROT_270 = 36352
 };
+
+typedef struct		s_vblock_data
+{
+	int				w;
+	int				h;
+	uint64_t		bits;
+}					t_vblock_data;
 
 typedef struct		s_block
 {

@@ -6,13 +6,13 @@
 /*   By: srouhe <srouhe@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 13:12:20 by srouhe            #+#    #+#             */
-/*   Updated: 2019/11/04 15:02:36 by srouhe           ###   ########.fr       */
+/*   Updated: 2019/11/04 16:09:27 by srouhe           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
-void		print_map(uint64_t map)
+void				print_map(uint64_t map)
 {
 	int				i;
 	long			bit;
@@ -31,15 +31,46 @@ void		print_map(uint64_t map)
 	write(1, "\n", 1);
 }
 
-void		solve(t_list *blocks, int n_blocks)
+static uint64_t		fit_block(uint64_t map, uint64_t bits, int size, int w, int h)
+{
+	int	x;
+	int y;
+
+	x = w;
+	y = h;
+	while (bits & map && y < size)
+	{
+		x = w;
+		while (bits & map && x < size)
+		{
+			bits = bits >> 1;
+			x++;
+		}
+		y++;
+	}
+	return (map | bits);
+}
+
+void				solve(t_list *blocks, int n_blocks)
 {
 	uint64_t		map;
 	uint64_t		bits;
-	t_block			*current;
+	t_list			*cur_lst;
+	t_block			*cur_blk;
 
-	current = blocks->content;
-	bits = current->bits;
-	map = bits;
-	print_map(map);
 	printf("Min map size: %d\n", n_blocks * 4);
+	cur_lst = blocks;
+	map = 0;
+	while (cur_lst->next)
+	{
+		cur_blk = cur_lst->content;
+		bits = cur_blk->bits;
+		if (map)
+			map = fit_block(map, bits, n_blocks * 4);
+		else
+			map = bits;
+		print_map(map);
+		cur_lst = cur_lst->next;
+	}
+	
 }

@@ -6,7 +6,7 @@
 /*   By: srouhe <srouhe@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 13:12:20 by srouhe            #+#    #+#             */
-/*   Updated: 2019/11/04 18:57:24 by srouhe           ###   ########.fr       */
+/*   Updated: 2019/11/04 19:07:53 by srouhe           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,8 @@ void				solve(t_list *blocks, int n_blocks)
 		printf("Block.w = %d, Block.h = %d\n", cur_blk->x, cur_blk->y);
 		if ((cur_blk->pos = check_spot(map, cur_blk->bits, 6, cur_blk->x, cur_blk->y)))
 			map = map | cur_blk->pos;
+		else
+			cur_blk->pos = 0;
 		print_map(map);
 		cur_lst = cur_lst->next;
 	}

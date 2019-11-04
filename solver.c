@@ -6,7 +6,7 @@
 /*   By: srouhe <srouhe@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 13:12:20 by srouhe            #+#    #+#             */
-/*   Updated: 2019/11/04 16:09:27 by srouhe           ###   ########.fr       */
+/*   Updated: 2019/11/04 18:16:30 by srouhe           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,44 +31,49 @@ void				print_map(uint64_t map)
 	write(1, "\n", 1);
 }
 
-static uint64_t		fit_block(uint64_t map, uint64_t bits, int size, int w, int h)
+static uint64_t		check_spot(uint64_t map, uint64_t bits, int size, int w, int h)
 {
-	int	x;
+	int shift;
 	int y;
 
-	x = w;
-	y = h;
-	while (bits & map && y < size)
+	y = 0;
+	shift = 0;
+	while (bits & map && y < size - h)
 	{
-		x = w;
-		while (bits & map && x < size)
+		if (shift + w == size)
 		{
-			bits = bits >> 1;
-			x++;
+			printf("row switch\n");
+			bits = bits >> (8 - size + w);
+			y++;
+			shift = 0;
+			continue ;
 		}
-		y++;
+		else
+			bits = bits >> 1;
+		shift++;
 	}
-	return (map | bits);
+	printf("y = %d, size = %d, shift = %d, w = %d, h = %d\n", y, size, shift, w, h);
+	if (bits & map && (y == size - h))
+		return (0);
+	printf("Adding block\n");
+	return (bits);
 }
 
 void				solve(t_list *blocks, int n_blocks)
 {
 	uint64_t		map;
-	uint64_t		bits;
 	t_list			*cur_lst;
 	t_block			*cur_blk;
 
-	printf("Min map size: %d\n", n_blocks * 4);
 	cur_lst = blocks;
 	map = 0;
 	while (cur_lst->next)
 	{
 		cur_blk = cur_lst->content;
-		bits = cur_blk->bits;
-		if (map)
-			map = fit_block(map, bits, n_blocks * 4);
-		else
-			map = bits;
+		printf("Map %dx%d\n", n_blocks + 1, n_blocks + 1);
+		printf("Block.w = %d, Block.h = %d\n", cur_blk->x, cur_blk->y);
+		if ((cur_blk->pos = check_spot(map, cur_blk->bits, 5, cur_blk->x, cur_blk->y)))
+			map = map | cur_blk->pos;
 		print_map(map);
 		cur_lst = cur_lst->next;
 	}

@@ -6,7 +6,7 @@
 /*   By: srouhe <srouhe@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/03 14:32:53 by srouhe            #+#    #+#             */
-/*   Updated: 2019/11/04 18:57:42 by srouhe           ###   ########.fr       */
+/*   Updated: 2019/11/04 19:23:07 by srouhe           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,12 @@ t_list				*read_blocks(const int fd, int *n_blocks)
 	return (blocks);
 }
 
+void 	del_block(void *block, size_t block_size)
+{
+	free(block);
+	block_size++;
+}
+
 static int			throw_error(char *estr)
 {
 	ft_putstr_fd(estr, 2);
@@ -173,5 +179,7 @@ int					main(int ac, char **av)
 		return (throw_error("Block error!"));
 	close(fd);
 	solve(blocks, n_blocks);
+	ft_lstdel(&blocks, &del_block);
+	while(1);
 	return (0);
 }

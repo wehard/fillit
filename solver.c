@@ -6,7 +6,7 @@
 /*   By: srouhe <srouhe@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 13:12:20 by srouhe            #+#    #+#             */
-/*   Updated: 2019/11/04 19:07:53 by srouhe           ###   ########.fr       */
+/*   Updated: 2019/11/04 19:18:22 by srouhe           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ void				print_blk_lst(t_list *blklst, int size)
 		if (i % size == 0)
 			write(1, "\n", 1);
 	}
+	free(map);
 }
 
 static uint64_t		check_spot(uint64_t map, uint64_t bits, int size, int w, int h)

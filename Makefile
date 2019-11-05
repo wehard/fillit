@@ -6,11 +6,13 @@
 #    By: wkorande <wkorande@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/03 14:53:22 by srouhe            #+#    #+#              #
-#    Updated: 2019/11/05 11:14:55 by wkorande         ###   ########.fr        #
+#    Updated: 2019/11/05 11:20:27 by wkorande         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = fillit
+
+FLAGS = -Wall -Werror -Wextra
 
 SRCS = 	main.c\
 		solver.c\
@@ -22,16 +24,14 @@ OBJ = $(patsubst %.c, %.o, $(SRCS))
 
 INCL = .
 
-FLAGS = -Wall -Werror -Wextra
-
 all: $(NAME)
 
 $(NAME):
-	make -C libft
+	make -C $(LIBDIR)
 	clang $(FLAGS) -o $(NAME) $(SRCS) -I $(INCL) -I $(LIBDIR)/includes -L$(LIBDIR) -lft
 
 debug:
-	make -C libft
+	make -C $(LIBDIR)
 	clang -g -o $(NAME) $(SRCS) -I $(INCL) -I $(LIBDIR)/includes -L$(LIBDIR) -lft
 
 clean:

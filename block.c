@@ -6,14 +6,14 @@
 /*   By: wkorande <wkorande@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/05 10:27:50 by wkorande          #+#    #+#             */
-/*   Updated: 2019/11/05 11:31:10 by wkorande         ###   ########.fr       */
+/*   Updated: 2019/11/05 13:24:15 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 #include "block.h"
 
-t_vblock_data g_valid_blocks[19] =
+t_vblock_data	g_valid_blocks[19] =
 {
 	{1, 4, 9259542121117908992ULL},
 	{4, 1, 17293822569102704640ULL},
@@ -36,7 +36,7 @@ t_vblock_data g_valid_blocks[19] =
 	{3, 2, 4674736413210574848ULL}
 };
 
-t_block		*create_block(char id, uint64_t bits, int w, int h)
+t_block			*create_block(char id, uint64_t bits, int w, int h)
 {
 	t_block		*new_block;
 
@@ -50,7 +50,7 @@ t_block		*create_block(char id, uint64_t bits, int w, int h)
 	return (new_block);
 }
 
-int	validate_block(uint64_t bits)
+int				validate_block(uint64_t bits)
 {
 	int i;
 
@@ -64,7 +64,7 @@ int	validate_block(uint64_t bits)
 	return (-1);
 }
 
-void 	delete_block(void *block, size_t block_size)
+void			delete_block(void *block, size_t block_size)
 {
 	free(block);
 	block_size++;

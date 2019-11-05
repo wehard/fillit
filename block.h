@@ -6,14 +6,14 @@
 /*   By: wkorande <wkorande@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/05 10:44:32 by wkorande          #+#    #+#             */
-/*   Updated: 2019/11/05 11:00:52 by wkorande         ###   ########.fr       */
+/*   Updated: 2019/11/05 13:23:36 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BLOCK_H
 # define BLOCK_H
 
-#include <stdint.h>
+# include <stdint.h>
 
 typedef struct		s_vblock_data
 {

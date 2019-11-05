@@ -6,7 +6,7 @@
 /*   By: wkorande <wkorande@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/03 14:32:53 by srouhe            #+#    #+#             */
-/*   Updated: 2019/11/05 11:31:57 by wkorande         ###   ########.fr       */
+/*   Updated: 2019/11/05 13:21:26 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,7 @@ int					main(int ac, char **av)
 	t_list		*block_list;
 
 	if (ac != 2)
-	{
-		ft_putendl("usage: ./fillit input_file");
-		return (1);
-	}
+		return (throw_error("usage: ./fillit input_file"));
 	if ((fd = open(av[1], O_RDONLY)) < 0)
 	{
 		return (throw_error("error opening file"));
@@ -43,7 +40,7 @@ int					main(int ac, char **av)
 	{
 		close(fd);
 		solve(block_list, n_blocks);
-		print_block_list(block_list, 8);
+		print_block_list(block_list, 8, TRUE);
 		ft_lstdel(&block_list, &delete_block);
 	}
 	return (0);

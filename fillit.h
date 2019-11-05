@@ -6,7 +6,7 @@
 /*   By: wkorande <wkorande@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/03 14:35:38 by srouhe            #+#    #+#             */
-/*   Updated: 2019/11/05 11:27:51 by wkorande         ###   ########.fr       */
+/*   Updated: 2019/11/05 13:23:21 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,10 @@
 # include <fcntl.h>
 # include <stdlib.h>
 # include "libft.h"
-//# include "block.h"
 
 # define BUF_SIZE 21
+# define TRUE 1
+# define FALSE 0
 
 typedef struct	s_map
 {
@@ -31,7 +32,7 @@ typedef struct	s_map
 
 void			solve(t_list *block_list, int n_blocks);
 void			print_map(uint64_t map);
-void			print_block_list(t_list *block_list, int size);
+void			print_block_list(t_list *block_list, int size, int pretty);
 
 t_list			*read_blocks(const int fd, int *n_blocks);
 

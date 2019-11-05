@@ -6,7 +6,7 @@
 /*   By: wkorande <wkorande@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 13:12:20 by srouhe            #+#    #+#             */
-/*   Updated: 2019/11/05 11:30:18 by wkorande         ###   ########.fr       */
+/*   Updated: 2019/11/05 13:19:41 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,14 @@ void				print_map(uint64_t map)
 	write(1, "\n", 1);
 }
 
-void				print_block_list(t_list *block_list, int size)
+static void			set_term_color(char c)
+{
+	ft_putstr("\033[1;");
+	ft_putnbr((int)c - 'A' + 41);
+	ft_putstr("m");
+}
+
+void				print_block_list(t_list *block_list, int size, int pretty)
 {
 	int				i;
 	long			bit;
@@ -58,7 +65,11 @@ void				print_block_list(t_list *block_list, int size)
 	i = 0;
 	while (map[i] && i < size * size)
 	{
+		if(pretty && map[i] != '.')
+			set_term_color(map[i]);
 		write(1, &(map[i]), 1);
+		if (pretty)
+			ft_putstr(" \033[0m");
 		i++;
 		if (i % size == 0)
 			write(1, "\n", 1);
@@ -112,7 +123,7 @@ void				solve(t_list *block_list, int n_blocks)
 			map = map | cur_blk->pos;
 		else
 			cur_blk->pos = 0;
-		//print_map(map);
 		cur_lst = cur_lst->next;
 	}
+	print_map(map);
 }

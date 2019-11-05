@@ -6,7 +6,7 @@
 /*   By: wkorande <wkorande@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/05 11:25:41 by wkorande          #+#    #+#             */
-/*   Updated: 2019/11/05 11:33:05 by wkorande         ###   ########.fr       */
+/*   Updated: 2019/11/05 13:28:00 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ static	uint64_t	shift_bits_64(uint64_t bits)
 	return (bits);
 }
 
-static uint64_t	get_bits(char *binary)
+static uint64_t		get_bits(char *binary)
 {
-	uint64_t 	total;
+	uint64_t	total;
 	int			i;
 
 	total = 0;
@@ -48,11 +48,10 @@ static uint64_t	get_bits(char *binary)
 	}
 	//write(1, "shifted bits:\n", 14);
 	total = shift_bits_64(total);
-	//print_map(total);
 	return (total);
 }
 
-t_list			*read_blocks(const int fd, int *n_blocks)
+t_list				*read_blocks(const int fd, int *n_blocks)
 {
 	char		buf[BUF_SIZE + 1];
 	int			i;
@@ -76,10 +75,8 @@ t_list			*read_blocks(const int fd, int *n_blocks)
 		if ((g_index = validate_block(bits)) < 0)
 			return (NULL);
 		current->content = create_block('A' + i, bits, g_valid_blocks[g_index].w, g_valid_blocks[g_index].h);
-
 		test = current->content;
 		//printf("bits as decimal: %llu index: %c\n\n", test->bits, test->id);
-
 		current->content_size = sizeof(current->content);
 		current->next = ft_lstnew(0, 0);
 		current = current->next;

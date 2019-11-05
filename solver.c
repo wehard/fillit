@@ -6,7 +6,7 @@
 /*   By: srouhe <srouhe@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 13:12:20 by srouhe            #+#    #+#             */
-/*   Updated: 2019/11/05 20:22:19 by srouhe           ###   ########.fr       */
+/*   Updated: 2019/11/05 20:34:59 by srouhe           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,14 +89,14 @@ static uint64_t		check_spot(int shift, uint64_t map, uint64_t bits)
 	return (bits);
 }
 
-int				solve(t_list *block_list, uint64_t map, int size, int i)
+int				solve(t_list *block_list, uint64_t map, int size, int i, int num_blocks)
 {
 	int				shift;
 	t_list			*cur_lst;
 	t_block			*cur_blk;
 
-	if (i == 10)
-		return (0);
+	if (i == num_blocks)
+		return (1);
 	shift = 0;
 	cur_lst = block_list;
 	while (shift < size * size)
@@ -104,11 +104,14 @@ int				solve(t_list *block_list, uint64_t map, int size, int i)
 		cur_blk = cur_lst->content;		
 		if ((cur_blk->pos = check_spot(shift, map, cur_blk->bits)))
 		{
-			map = map | cur_blk->pos;
-			if (solve(cur_lst->next, map, size, i + 1))
+			map |= cur_blk->pos;
+			if (solve(cur_lst->next, map, size, i + 1, num_blocks))
 				return (1);
 			else
+			{
+				map &= ~cur_blk->pos; 
 				cur_blk->pos = 0;
+			}
 		}
 		shift++;
 	}

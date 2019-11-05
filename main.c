@@ -6,7 +6,7 @@
 /*   By: srouhe <srouhe@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/03 14:32:53 by srouhe            #+#    #+#             */
-/*   Updated: 2019/11/05 20:19:22 by srouhe           ###   ########.fr       */
+/*   Updated: 2019/11/05 20:28:04 by srouhe           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,12 @@ int					main(int ac, char **av)
 	close(fd);
 	size = ft_sqrt(num_blocks * 4);
 	printf("Blocks: %d sqrt: %d\n", num_blocks, size);
-	while (!(solve(block_list, g_map_configs[size - 2], size, 0)) && size - 2 < 9)
+	while (!(solve(block_list, g_map_configs[size - 2], size, 0, num_blocks)) && size - 2 < 9)
 	{	
 		printf("Incrementing size from %d to %d\n", size, size + 1);
 		size++;
 	}
-	//print_block_list(block_list, num_blocks, 8, TRUE);
+	print_block_list(block_list, num_blocks, 8, TRUE);
 	//ft_lstdel(&block_list, &delete_block);
 	return (0);
 }

@@ -3,15 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   block.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wkorande <wkorande@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: srouhe <srouhe@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/05 10:27:50 by wkorande          #+#    #+#             */
-/*   Updated: 2019/11/05 13:24:15 by wkorande         ###   ########.fr       */
+/*   Updated: 2019/11/05 19:04:53 by srouhe           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 #include "block.h"
+
+uint64_t		g_map_configs[7] =
+{
+	4557642822898941951ULL,
+	2242546323825885183ULL,
+	1085102596613472255ULL,
+	506381209882853375ULL,
+	217020518514294783ULL,
+	72340172838076927ULL,
+	0
+};
 
 t_vblock_data	g_valid_blocks[19] =
 {

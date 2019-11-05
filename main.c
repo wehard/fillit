@@ -6,7 +6,7 @@
 /*   By: srouhe <srouhe@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/03 14:32:53 by srouhe            #+#    #+#             */
-/*   Updated: 2019/11/05 17:33:38 by srouhe           ###   ########.fr       */
+/*   Updated: 2019/11/05 19:25:02 by srouhe           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,35 @@ static int			throw_error(char *estr)
 	return (1);
 }
 
+int		ft_sqrt(int nb)
+{
+	int	i;
+	int sqrt;
+
+	i = 1;
+	if (!nb)
+		return (0);
+	while (i <= nb)
+	{
+		sqrt = i * i;
+		if (sqrt == nb)
+			return (i);
+		else if (sqrt < nb)
+			i++;
+		else
+		{
+			i = 1;
+			nb += 1;
+		}
+	}
+	return (0);
+}
+
 int					main(int ac, char **av)
 {
 	int			fd;
-	int			n_blocks;
+	int			num_blocks;
+	int			size;
 	t_list		*block_list;
 
 	if (ac != 2)
@@ -31,14 +56,18 @@ int					main(int ac, char **av)
 	{
 		return (throw_error("error opening file"));
 	}
-	if (!(block_list = read_blocks(fd, &n_blocks)))
+	if (!(block_list = read_blocks(fd, &num_blocks)))
 	{
 		close(fd);
 		return (throw_error("block error"));
 	}
 	close(fd);
-	while (!(solve(block_list, n_blocks)) && n_blocks < 26)
-		n_blocks++;
+	size = ft_sqrt(num_blocks * 4);
+	while (!(solve(block_list, g_map_configs[size - 2], size)) && size - 2 < 9)
+	{	
+		printf("Incrementing size from %d to %d\n", size, size + 1);
+		size++;
+	}
 	print_block_list(block_list, 8, TRUE);
 	ft_lstdel(&block_list, &delete_block);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: srouhe <srouhe@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 13:12:20 by srouhe            #+#    #+#             */
-/*   Updated: 2019/11/05 17:33:38 by srouhe           ###   ########.fr       */
+/*   Updated: 2019/11/05 19:26:58 by srouhe           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,42 +77,37 @@ void				print_block_list(t_list *block_list, int size, int pretty)
 	free(map);
 }
 
-static uint64_t		check_spot(int shift, uint64_t map, uint64_t bits, int size, int w, int h)
-{
-	h = 0;
-	if (shift + w == size)
-	{
-		printf("row switch\n");
-		bits = bits >> (8 - size + w);
-		shift = 0; // shift += more shift
-	}
+static uint64_t		check_spot(int shift, uint64_t map, uint64_t bits)
+{	
 	bits = bits >> shift;
 	if (map & bits)
+	{
+		printf("No fit\n");
 		return (0);
-	else
-		return (bits);
+	}
+	printf("Placing bit\n");
+	return (bits);
 }
 
-int				solve(t_list *block_list, int size)
+int				solve(t_list *block_list, uint64_t map, int size)
 {
-	uint64_t		map;
 	int				shift;
 	t_list			*cur_lst;
 	t_block			*cur_blk;
 
-	if (!block_list)
+	if (!block_list->next)
 		return (1);
 	cur_lst = block_list;
-	map = 0;
 	shift = 0;
+	printf("Size %d\n", size);
 	while (shift < size * size)
 	{
 		cur_blk = cur_lst->content;
 		
-		if ((cur_blk->pos = check_spot(shift, map, cur_blk->bits, size, cur_blk->x, cur_blk->y)))
+		if ((cur_blk->pos = check_spot(shift, map, cur_blk->bits)))
 		{
 			map = map | cur_blk->pos;
-			if (solve(block_list->next, size))
+			if (solve(block_list->next, map,  size))
 				return (1);
 			else
 				cur_blk->pos = 0;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wkorande <wkorande@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: srouhe <srouhe@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/03 14:32:53 by srouhe            #+#    #+#             */
-/*   Updated: 2019/11/05 13:21:26 by wkorande         ###   ########.fr       */
+/*   Updated: 2019/11/05 17:33:38 by srouhe           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,10 @@ int					main(int ac, char **av)
 		close(fd);
 		return (throw_error("block error"));
 	}
-	else
-	{
-		close(fd);
-		solve(block_list, n_blocks);
-		print_block_list(block_list, 8, TRUE);
-		ft_lstdel(&block_list, &delete_block);
-	}
+	close(fd);
+	while (!(solve(block_list, n_blocks)) && n_blocks < 26)
+		n_blocks++;
+	print_block_list(block_list, 8, TRUE);
+	ft_lstdel(&block_list, &delete_block);
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fillit.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wkorande <wkorande@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: srouhe <srouhe@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/03 14:35:38 by srouhe            #+#    #+#             */
-/*   Updated: 2019/11/05 13:23:21 by wkorande         ###   ########.fr       */
+/*   Updated: 2019/11/05 17:33:38 by srouhe           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ typedef struct	s_map
 	uint64_t	map;
 }				t_map;
 
-void			solve(t_list *block_list, int n_blocks);
+int				solve(t_list *block_list, int n_blocks);
 void			print_map(uint64_t map);
 void			print_block_list(t_list *block_list, int size, int pretty);
 
-t_list			*read_blocks(const int fd, int *n_blocks);
+t_list			*read_blocks(const int fd, int *size);
 
 #endif

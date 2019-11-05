@@ -6,7 +6,7 @@
 /*   By: srouhe <srouhe@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/03 14:35:38 by srouhe            #+#    #+#             */
-/*   Updated: 2019/11/05 18:27:36 by srouhe           ###   ########.fr       */
+/*   Updated: 2019/11/05 20:19:20 by srouhe           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ typedef struct	s_map
 	uint64_t	map;
 }				t_map;
 
-int				solve(t_list *block_list, uint64_t map, int n_blocks);
+int				solve(t_list *block_list, uint64_t map, int size, int i);
 void			print_map(uint64_t map);
-void			print_block_list(t_list *block_list, int size, int pretty);
+void			print_block_list(t_list *block_list, int n_blocks , int size, int pretty);
 
 t_list			*read_blocks(const int fd, int *size);
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   reader.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wkorande <wkorande@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: srouhe <srouhe@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/05 11:25:41 by wkorande          #+#    #+#             */
-/*   Updated: 2019/11/05 13:28:00 by wkorande         ###   ########.fr       */
+/*   Updated: 2019/11/05 20:11:02 by srouhe           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ t_list				*read_blocks(const int fd, int *n_blocks)
 	uint64_t	bits;
 	t_list		*blocks;
 	t_list		*current;
-	t_block		*test;
 
 	blocks = ft_lstnew(0, 0);
 	current = blocks;
@@ -74,8 +73,7 @@ t_list				*read_blocks(const int fd, int *n_blocks)
 			return (NULL);
 		if ((g_index = validate_block(bits)) < 0)
 			return (NULL);
-		current->content = create_block('A' + i, bits, g_valid_blocks[g_index].w, g_valid_blocks[g_index].h);
-		test = current->content;
+		current->content = create_block('A' + i, bits, 0);
 		//printf("bits as decimal: %llu index: %c\n\n", test->bits, test->id);
 		current->content_size = sizeof(current->content);
 		current->next = ft_lstnew(0, 0);
@@ -83,5 +81,6 @@ t_list				*read_blocks(const int fd, int *n_blocks)
 		i++;
 		*n_blocks += 1;
 	}
+	current->next = blocks;
 	return (blocks);
 }

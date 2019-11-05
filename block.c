@@ -6,7 +6,7 @@
 /*   By: srouhe <srouhe@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/05 10:27:50 by wkorande          #+#    #+#             */
-/*   Updated: 2019/11/05 19:04:53 by srouhe           ###   ########.fr       */
+/*   Updated: 2019/11/05 19:48:29 by srouhe           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ t_vblock_data	g_valid_blocks[19] =
 	{3, 2, 4674736413210574848ULL}
 };
 
-t_block			*create_block(char id, uint64_t bits, int w, int h)
+t_block			*create_block(char id, uint64_t bits, int last)
 {
 	t_block		*new_block;
 
@@ -55,9 +55,8 @@ t_block			*create_block(char id, uint64_t bits, int w, int h)
 		return (NULL);
 	new_block->id = id;
 	new_block->bits = bits;
-	new_block->x = w;
-	new_block->y = h;
 	new_block->pos = 0;
+	new_block->last = last;
 	return (new_block);
 }
 

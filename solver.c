@@ -6,7 +6,7 @@
 /*   By: srouhe <srouhe@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 13:12:20 by srouhe            #+#    #+#             */
-/*   Updated: 2019/11/05 19:26:58 by srouhe           ###   ########.fr       */
+/*   Updated: 2019/11/05 20:22:19 by srouhe           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static void			set_term_color(char c)
 	ft_putstr("m");
 }
 
-void				print_block_list(t_list *block_list, int size, int pretty)
+void				print_block_list(t_list *block_list, int n_blocks , int size, int pretty)
 {
 	int				i;
 	long			bit;
@@ -49,7 +49,7 @@ void				print_block_list(t_list *block_list, int size, int pretty)
 	map = ft_strnew(64);
 	ft_memset(map, '.', 64);
 
-	while (block_list->next)
+	while (block_list->next && n_blocks--)
 	{
 		cur_blk = block_list->content;
 		i = 63;
@@ -82,39 +82,35 @@ static uint64_t		check_spot(int shift, uint64_t map, uint64_t bits)
 	bits = bits >> shift;
 	if (map & bits)
 	{
-		printf("No fit\n");
+		//printf("No fit\n");
 		return (0);
 	}
-	printf("Placing bit\n");
+	//printf("Placing bit\n");
 	return (bits);
 }
 
-int				solve(t_list *block_list, uint64_t map, int size)
+int				solve(t_list *block_list, uint64_t map, int size, int i)
 {
 	int				shift;
 	t_list			*cur_lst;
 	t_block			*cur_blk;
 
-	if (!block_list->next)
-		return (1);
-	cur_lst = block_list;
+	if (i == 10)
+		return (0);
 	shift = 0;
-	printf("Size %d\n", size);
+	cur_lst = block_list;
 	while (shift < size * size)
 	{
-		cur_blk = cur_lst->content;
-		
+		cur_blk = cur_lst->content;		
 		if ((cur_blk->pos = check_spot(shift, map, cur_blk->bits)))
 		{
 			map = map | cur_blk->pos;
-			if (solve(block_list->next, map,  size))
+			if (solve(cur_lst->next, map, size, i + 1))
 				return (1);
 			else
 				cur_blk->pos = 0;
 		}
 		shift++;
 	}
-		//printf("Map %dx%d\n", n_blocks + 1, n_blocks + 1);
-		//printf("Block.w = %d, Block.h = %d\n", cur_blk->x, cur_blk->y);
 	return (0);
 }

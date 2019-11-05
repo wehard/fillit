@@ -3,67 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   fillit.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: srouhe <srouhe@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: wkorande <wkorande@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/03 14:35:38 by srouhe            #+#    #+#             */
-/*   Updated: 2019/11/04 16:08:48 by srouhe           ###   ########.fr       */
+/*   Updated: 2019/11/05 11:27:51 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FILLIT_H
-
 # define FILLIT_H
+
+# include <unistd.h>
+# include <stdint.h>
+# include <stdio.h>
+# include <fcntl.h>
+# include <stdlib.h>
+# include "libft.h"
+//# include "block.h"
 
 # define BUF_SIZE 21
 
-#include <unistd.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <fcntl.h>
-#include <stdlib.h>
-#include "libft.h"
-
-enum
+typedef struct	s_map
 {
-	VERTICAL = 34952,
-	HORZONTAL = 15,
-	SQUARE = 52224,
-	L = 35008,
-	L_ROT_90 = 59392,
-	L_ROT_180 = 50240,
-	L_ROT_270 = 11776,
-	INV_L = 51328,
-	INV_L_ROT_90 = 57856,
-	INV_L_ROT_180 = 17600,
-	INV_L_ROT_270 = 36352
-};
+	int			size;
+	uint64_t	map;
+}				t_map;
 
-typedef struct		s_vblock_data
-{
-	int				w;
-	int				h;
-	uint64_t		bits;
-}					t_vblock_data;
+void			solve(t_list *block_list, int n_blocks);
+void			print_map(uint64_t map);
+void			print_block_list(t_list *block_list, int size);
 
-typedef struct		s_block
-{
-	char			id;
-	uint64_t		bits;
-	uint64_t		pos;
-	uint8_t			x;
-	uint8_t			y;
-
-
-}					t_block;
-
-typedef struct		s_map
-{
-	int				size;
-	uint64_t		map;
-
-}					t_map;
-
-void				solve(t_list *blocks, int n_blocks);
-void				print_map(uint64_t map);
+t_list			*read_blocks(const int fd, int *n_blocks);
 
 #endif

@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   solver.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: srouhe <srouhe@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: wkorande <wkorande@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 13:12:20 by srouhe            #+#    #+#             */
-/*   Updated: 2019/11/04 19:18:22 by srouhe           ###   ########.fr       */
+/*   Updated: 2019/11/05 11:30:18 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
+#include "block.h"
 
 void				print_map(uint64_t map)
 {
@@ -31,7 +32,7 @@ void				print_map(uint64_t map)
 	write(1, "\n", 1);
 }
 
-void				print_blk_lst(t_list *blklst, int size)
+void				print_block_list(t_list *block_list, int size)
 {
 	int				i;
 	long			bit;
@@ -40,10 +41,10 @@ void				print_blk_lst(t_list *blklst, int size)
 
 	map = ft_strnew(64);
 	ft_memset(map, '.', 64);
-	
-	while (blklst->next)
+
+	while (block_list->next)
 	{
-		cur_blk = blklst->content;
+		cur_blk = block_list->content;
 		i = 63;
 		while (i)
 		{
@@ -52,7 +53,7 @@ void				print_blk_lst(t_list *blklst, int size)
 				map[63 - i] = cur_blk->id;
 			i--;
 		}
-		blklst = blklst->next;
+		block_list = block_list->next;
 	}
 	i = 0;
 	while (map[i] && i < size * size)
@@ -76,7 +77,7 @@ static uint64_t		check_spot(uint64_t map, uint64_t bits, int size, int w, int h)
 	{
 		if (shift + w == size)
 		{
-			printf("row switch\n");
+			//printf("row switch\n");
 			bits = bits >> (8 - size + w);
 			y++;
 			shift = 0;
@@ -86,32 +87,32 @@ static uint64_t		check_spot(uint64_t map, uint64_t bits, int size, int w, int h)
 			bits = bits >> 1;
 		shift++;
 	}
-	printf("y = %d, size = %d, shift = %d, w = %d, h = %d\n", y, size, shift, w, h);
+	//printf("y = %d, size = %d, shift = %d, w = %d, h = %d\n", y, size, shift, w, h);
 	if (bits & map && (y == size - h))
 		return (0);
-	printf("Adding block\n");
+	//printf("Adding block\n");
 	return (bits);
 }
 
-void				solve(t_list *blocks, int n_blocks)
+void				solve(t_list *block_list, int n_blocks)
 {
 	uint64_t		map;
 	t_list			*cur_lst;
 	t_block			*cur_blk;
 
-	cur_lst = blocks;
+	cur_lst = block_list;
 	map = 0;
 	while (cur_lst->next)
 	{
 		cur_blk = cur_lst->content;
-		printf("Map %dx%d\n", n_blocks + 1, n_blocks + 1);
-		printf("Block.w = %d, Block.h = %d\n", cur_blk->x, cur_blk->y);
+		n_blocks++; // !!
+		//printf("Map %dx%d\n", n_blocks + 1, n_blocks + 1);
+		//printf("Block.w = %d, Block.h = %d\n", cur_blk->x, cur_blk->y);
 		if ((cur_blk->pos = check_spot(map, cur_blk->bits, 6, cur_blk->x, cur_blk->y)))
 			map = map | cur_blk->pos;
 		else
 			cur_blk->pos = 0;
-		print_map(map);
+		//print_map(map);
 		cur_lst = cur_lst->next;
 	}
-	print_blk_lst(blocks, 8);
 }

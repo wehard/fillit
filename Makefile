@@ -6,7 +6,7 @@
 #    By: wkorande <wkorande@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/03 14:53:22 by srouhe            #+#    #+#              #
-#    Updated: 2019/11/05 11:20:27 by wkorande         ###   ########.fr        #
+#    Updated: 2019/11/05 11:32:30 by wkorande         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,8 @@ FLAGS = -Wall -Werror -Wextra
 
 SRCS = 	main.c\
 		solver.c\
-		block.c
+		block.c\
+		reader.c
 
 LIBDIR = libft
 

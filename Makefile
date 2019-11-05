@@ -3,38 +3,45 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: srouhe <srouhe@student.hive.fi>            +#+  +:+       +#+         #
+#    By: wkorande <wkorande@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/03 14:53:22 by srouhe            #+#    #+#              #
-#    Updated: 2019/11/04 15:06:21 by srouhe           ###   ########.fr        #
+#    Updated: 2019/11/05 11:14:55 by wkorande         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS = main.c solver.c
+NAME = fillit
+
+SRCS = 	main.c\
+		solver.c\
+		block.c
+
+LIBDIR = libft
 
 OBJ = $(patsubst %.c, %.o, $(SRCS))
 
-NAME = fillit
-
-HDR = ./
+INCL = .
 
 FLAGS = -Wall -Werror -Wextra
 
 all: $(NAME)
 
 $(NAME):
-	@clang -I libft/includes -c $(SRCS)
-	@clang -o $(NAME) $(OBJ) -I libft/includes -L libft/ -lft
+	make -C libft
+	clang $(FLAGS) -o $(NAME) $(SRCS) -I $(INCL) -I $(LIBDIR)/includes -L$(LIBDIR) -lft
+
+debug:
+	make -C libft
+	clang -g -o $(NAME) $(SRCS) -I $(INCL) -I $(LIBDIR)/includes -L$(LIBDIR) -lft
 
 clean:
+	make clean -C $(LIBDIR)
 	@/bin/rm -f *.o
 
 fclean: clean
+	make fclean -C $(LIBDIR)
 	@/bin/rm -f $(NAME)
 
 re: fclean all
 
-.PHONY: all
-.PHONY: clean
-.PHONY: fclean
-.PHONY: re
+.PHONY: all clean fclean re

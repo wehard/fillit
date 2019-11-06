@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: srouhe <srouhe@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: wkorande <wkorande@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/03 14:32:53 by srouhe            #+#    #+#             */
-/*   Updated: 2019/11/05 20:41:37 by srouhe           ###   ########.fr       */
+/*   Updated: 2019/11/06 13:55:17 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,11 @@ int					main(int ac, char **av)
 	size = ft_sqrt(num_blocks * 4);
 	printf("Blocks: %d sqrt: %d\n", num_blocks, size);
 	while (!(solve(block_list, g_map_configs[size - 2], size, 0, num_blocks)) && size - 2 < 9)
-	{	
+	{
 		printf("Incrementing size from %d to %d\n", size, size + 1);
 		size++;
 	}
-	print_block_list(block_list, num_blocks, 8, TRUE);
+	print_block_list(block_list, num_blocks, size, TRUE);
 	//ft_lstdel(&block_list, &delete_block);
 	return (0);
 }

@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   solver.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: srouhe <srouhe@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: wkorande <wkorande@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 13:12:20 by srouhe            #+#    #+#             */
-/*   Updated: 2019/11/05 20:41:36 by srouhe           ###   ########.fr       */
+/*   Updated: 2019/11/06 13:57:39 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 #include "block.h"
 
-void				print_map(uint64_t map)
+void				print_binary_map(uint64_t map)
 {
 	int				i;
 	long			bit;
@@ -39,6 +39,39 @@ static void			set_term_color(char c)
 	ft_putstr("m");
 }
 
+void			print_map(char *map, int size, int pretty)
+{
+	int i;
+	int j;
+	int len;
+	int	r;
+
+	len = (size + 1) * (size + 1);
+	i = 0;
+	j = 0;
+	r = 0;
+	while (map[i])
+	{
+		if (r == size)
+			break ;
+		if (j == size)
+		{
+			write(1, "\n", 1);
+			i += 8 - size;
+			j = 0;
+			r++;
+			continue ;
+		}
+		if(pretty && map[i] != '.')
+			set_term_color(map[i]);
+		write(1, &(map[i]), 1);
+		if (pretty)
+			ft_putstr(" \033[0m");
+		i++;
+		j++;
+	}
+}
+
 void				print_block_list(t_list *block_list, int n_blocks , int size, int pretty)
 {
 	int				i;
@@ -62,23 +95,14 @@ void				print_block_list(t_list *block_list, int n_blocks , int size, int pretty
 		}
 		block_list = block_list->next;
 	}
-	i = 0;
-	while (map[i] && i < size * size)
-	{
-		if(pretty && map[i] != '.')
-			set_term_color(map[i]);
-		write(1, &(map[i]), 1);
-		if (pretty)
-			ft_putstr(" \033[0m");
-		i++;
-		if (i % size == 0)
-			write(1, "\n", 1);
-	}
+	print_map(map, size, pretty);
 	free(map);
 }
 
+
+
 static uint64_t		check_spot(int shift, uint64_t map, uint64_t bits)
-{	
+{
 	bits = bits >> shift;
 	if (map & bits)
 	{
@@ -101,7 +125,7 @@ int				solve(t_list *block_list, uint64_t map, int size, int i, int num_blocks)
 	cur_lst = block_list;
 	while (shift < size * size)
 	{
-		cur_blk = cur_lst->content;		
+		cur_blk = cur_lst->content;
 		if ((cur_blk->pos = check_spot(shift, map, cur_blk->bits)))
 		{
 			map |= cur_blk->pos;
@@ -109,7 +133,7 @@ int				solve(t_list *block_list, uint64_t map, int size, int i, int num_blocks)
 				return (1);
 			else
 			{
-				map &= ~cur_blk->pos; 
+				map &= ~cur_blk->pos;
 				cur_blk->pos = 0;
 			}
 		}

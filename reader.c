@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   reader.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: srouhe <srouhe@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: wkorande <wkorande@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/05 11:25:41 by wkorande          #+#    #+#             */
-/*   Updated: 2019/11/05 20:11:02 by srouhe           ###   ########.fr       */
+/*   Updated: 2019/11/06 12:21:43 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ t_list				*read_blocks(const int fd, int *n_blocks)
 	t_list		*blocks;
 	t_list		*current;
 
+	*n_blocks = 0;
 	blocks = ft_lstnew(0, 0);
 	current = blocks;
 	i = 0;

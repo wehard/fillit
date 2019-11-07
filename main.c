@@ -6,16 +6,16 @@
 /*   By: srouhe <srouhe@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/03 14:32:53 by srouhe            #+#    #+#             */
-/*   Updated: 2019/11/07 13:31:52 by srouhe           ###   ########.fr       */
+/*   Updated: 2019/11/07 14:07:27 by srouhe           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
-static int			throw_error(char *estr)
+static int			throw_error(char *estr, int error)
 {
-	ft_putendl_fd(estr, 2);
-	return (1);
+	ft_putendl_fd(estr, 1);
+	return (error);
 }
 
 static int			ft_sqrt_next(int nb)
@@ -64,13 +64,13 @@ int					main(int ac, char **av)
 	t_list		*b_lst;
 
 	if (ac != 2)
-		return (throw_error("usage: ./fillit file"));
+		return (throw_error("usage: ./fillit file", 1));
 	if ((fd = open(av[1], O_RDONLY)) < 0)
-		return (throw_error("error opening file"));
+		return (throw_error("error", 2));
 	if (!(b_lst = read_blocks(fd, &params[1])))
 	{
 		close(fd);
-		return (throw_error("block error"));
+		return (throw_error("error", 3));
 	}
 	close(fd);
 	params[0] = ft_sqrt_next(params[1] * 4);

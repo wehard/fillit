@@ -6,11 +6,12 @@
 /*   By: srouhe <srouhe@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/05 11:25:41 by wkorande          #+#    #+#             */
-/*   Updated: 2019/11/07 13:31:24 by srouhe           ###   ########.fr       */
+/*   Updated: 2019/11/07 15:46:43 by srouhe           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
+#include <stdio.h>
 
 static	uint64_t	shift_bits_64(uint64_t bits)
 {
@@ -56,13 +57,18 @@ t_list				*read_blocks(const int fd, int *nb)
 	t_list		*current;
 
 	*nb = 0;
-	blocks = ft_lstnew(0, 0);
-	current = blocks;
 	while ((n_read = read(fd, buf, BUF_SIZE)) > 0)
 	{
+		if (!blocks)
+		{
+			blocks = ft_lstnew(0, 0);
+			current = blocks;
+		}
 		buf[n_read] = '\0';
+		printf("len: %zu\n", ft_strlen(buf));
 		bits = get_bits(buf);
-		if (buf[n_read - 1] != '\n' || !(validate_block(bits)))
+		if (buf[n_read - 1] != '\n' || (buf[0] != '.' && buf[0] != '#')
+			|| !(validate_block(bits)))
 			return (NULL);
 		current->content = create_block('A' + *nb, bits);
 		current->content_size = sizeof(current->content);
@@ -70,6 +76,9 @@ t_list				*read_blocks(const int fd, int *nb)
 		current = current->next;
 		*nb += 1;
 	}
+	if (!blocks)
+		return (NULL);
+	printf("BUFFER%s", buf);
 	current->next = blocks;
 	return (blocks);
 }

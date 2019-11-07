@@ -6,12 +6,11 @@
 /*   By: srouhe <srouhe@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/05 10:27:50 by wkorande          #+#    #+#             */
-/*   Updated: 2019/11/07 13:29:29 by srouhe           ###   ########.fr       */
+/*   Updated: 2019/11/07 13:43:48 by srouhe           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
-#include "block.h"
 
 uint64_t		g_map_configs[7] =
 {
@@ -24,7 +23,7 @@ uint64_t		g_map_configs[7] =
 	0
 };
 
-uint64_t	g_valid_blocks[19] =
+uint64_t		g_valid_blocks[19] =
 {
 	9259542121117908992ULL,
 	17293822569102704640ULL,

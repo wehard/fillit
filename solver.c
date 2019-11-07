@@ -6,7 +6,7 @@
 /*   By: srouhe <srouhe@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 13:12:20 by srouhe            #+#    #+#             */
-/*   Updated: 2019/11/07 13:34:06 by srouhe           ###   ########.fr       */
+/*   Updated: 2019/11/07 13:50:46 by srouhe           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,34 +19,32 @@ static void			set_term_color(char c)
 	ft_putstr("m");
 }
 
-void				print_map(char *map, int size, int p)
+static void			print_map(char *map, int size, int p)
 {
-	int i;
-	int j;
-	int	r;
+	int ijr[3];
 
-	i = 0;
-	j = 0;
-	r = 0;
-	while (map[i])
+	ijr[0] = 0;
+	ijr[1] = 0;
+	ijr[2] = 0;
+	while (map[ijr[0]])
 	{
-		if (r == size)
+		if (ijr[2] == size)
 			break ;
-		if (j == size)
+		if (ijr[1] == size)
 		{
 			write(1, "\n", 1);
-			i += 8 - size;
-			j = 0;
-			r++;
+			ijr[0] += 8 - size;
+			ijr[1] = 0;
+			ijr[2]++;
 			continue ;
 		}
-		if (p && map[i] != '.')
-			set_term_color(map[i]);
-		write(1, &(map[i]), 1);
+		if (p && map[ijr[0]] != '.')
+			set_term_color(map[ijr[0]]);
+		write(1, &(map[ijr[0]]), 1);
 		if (p)
 			ft_putstr(" \033[0m");
-		i++;
-		j++;
+		ijr[0]++;
+		ijr[1]++;
 	}
 }
 

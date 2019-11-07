@@ -6,7 +6,7 @@
 #    By: srouhe <srouhe@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/03 14:53:22 by srouhe            #+#    #+#              #
-#    Updated: 2019/11/07 13:38:14 by srouhe           ###   ########.fr        #
+#    Updated: 2019/11/07 13:58:14 by srouhe           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ INCL = .
 all: $(NAME)
 
 $(NAME):
-	@make -C $(LIBDIR) && make clean -C $(LIBDIR)
+	@make -C $(LIBDIR)
 	@clang $(FLAGS) -o $(NAME) $(SRCS) -I $(INCL) -I $(LIBDIR)/includes -L$(LIBDIR) -lft
 
 clean:

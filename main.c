@@ -6,7 +6,7 @@
 /*   By: srouhe <srouhe@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/03 14:32:53 by srouhe            #+#    #+#             */
-/*   Updated: 2019/11/07 14:07:27 by srouhe           ###   ########.fr       */
+/*   Updated: 2019/11/07 16:41:52 by srouhe           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,27 +42,14 @@ static int			ft_sqrt_next(int nb)
 	return (0);
 }
 
-/*static void	free_blocks(t_list **alst)
-{
-	t_list	*tmp;
-
-	if (alst && *alst)
-	{
-		while (*alst)
-		{
-			*alst = (*alst)->next;
-			free(tmp);
-			tmp = NULL;
-		}
-	}
-}*/
-
 int					main(int ac, char **av)
 {
 	int			fd;
 	int			params[2];
 	t_list		*b_lst;
 
+	params[0] = 0;
+	params[1] = 0;
 	if (ac != 2)
 		return (throw_error("usage: ./fillit file", 1));
 	if ((fd = open(av[1], O_RDONLY)) < 0)
@@ -78,6 +65,6 @@ int					main(int ac, char **av)
 			params[0] - 2 < 9)
 		params[0]++;
 	print_b_lst(b_lst, params[1], params[0], FALSE);
-	//free_blocks(&b_lst);
+	while (1);
 	return (0);
 }

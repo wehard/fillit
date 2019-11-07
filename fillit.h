@@ -6,7 +6,7 @@
 /*   By: srouhe <srouhe@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/03 14:35:38 by srouhe            #+#    #+#             */
-/*   Updated: 2019/11/07 15:54:25 by srouhe           ###   ########.fr       */
+/*   Updated: 2019/11/07 16:41:10 by srouhe           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ extern	uint64_t		g_map_configs[7];
 int						solve(t_list *b_lst, uint64_t map, int *params, int i);
 int						validate_block(uint64_t bits);
 void					print_b_lst(t_list *b_lst, int nb, int size, int p);
-void					delete_block(void *block);
+void					free_block(t_list **b_lst);
 t_list					*read_blocks(const int fd, int *size);
 t_block					*create_block(char id, uint64_t bits);
 

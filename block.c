@@ -6,7 +6,7 @@
 /*   By: srouhe <srouhe@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/05 10:27:50 by wkorande          #+#    #+#             */
-/*   Updated: 2019/11/07 13:43:48 by srouhe           ###   ########.fr       */
+/*   Updated: 2019/11/07 16:40:57 by srouhe           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,8 @@ int				validate_block(uint64_t bits)
 	return (0);
 }
 
-void			delete_block(void *block)
+void			free_block(t_list **b_lst)
 {
-	free(block);
+	free((*b_lst)->content);
+	free(*b_lst);
 }

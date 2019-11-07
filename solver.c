@@ -6,7 +6,7 @@
 /*   By: srouhe <srouhe@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 13:12:20 by srouhe            #+#    #+#             */
-/*   Updated: 2019/11/07 13:50:46 by srouhe           ###   ########.fr       */
+/*   Updated: 2019/11/07 16:41:38 by srouhe           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ static void			print_map(char *map, int size, int p)
 		ijr[0]++;
 		ijr[1]++;
 	}
+	free(map);
 }
 
 void				print_b_lst(t_list *b_lst, int nb, int size, int p)
@@ -53,6 +54,7 @@ void				print_b_lst(t_list *b_lst, int nb, int size, int p)
 	int				i;
 	long			bit;
 	char			*map;
+	t_list			*tmp;
 	t_block			*cur_blk;
 
 	map = ft_strnew(64);
@@ -68,10 +70,12 @@ void				print_b_lst(t_list *b_lst, int nb, int size, int p)
 				map[63 - i] = cur_blk->id;
 			i--;
 		}
+		tmp = b_lst;
 		b_lst = b_lst->next;
+		free_block(&tmp);
 	}
+	free_block(&b_lst);
 	print_map(map, size, p);
-	free(map);
 }
 
 static uint64_t		check_spot(int shift, uint64_t map, uint64_t bits)

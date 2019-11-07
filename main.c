@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: srouhe <srouhe@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: wkorande <wkorande@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/03 14:32:53 by srouhe            #+#    #+#             */
-/*   Updated: 2019/11/07 16:48:45 by srouhe           ###   ########.fr       */
+/*   Updated: 2019/11/07 16:54:45 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,5 @@ int					main(int ac, char **av)
 			params[0] - 2 < 9)
 		params[0]++;
 	print_b_lst(b_lst, params[1], params[0]);
-	//while (1);
 	return (0);
 }

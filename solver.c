@@ -6,20 +6,13 @@
 /*   By: srouhe <srouhe@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 13:12:20 by srouhe            #+#    #+#             */
-/*   Updated: 2019/11/07 16:41:38 by srouhe           ###   ########.fr       */
+/*   Updated: 2019/11/07 16:49:30 by srouhe           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
-static void			set_term_color(char c)
-{
-	ft_putstr("\033[1;");
-	ft_putnbr((int)c - 'A' + 41);
-	ft_putstr("m");
-}
-
-static void			print_map(char *map, int size, int p)
+static void			print_map(char *map, int size)
 {
 	int ijr[3];
 
@@ -38,18 +31,14 @@ static void			print_map(char *map, int size, int p)
 			ijr[2]++;
 			continue ;
 		}
-		if (p && map[ijr[0]] != '.')
-			set_term_color(map[ijr[0]]);
 		write(1, &(map[ijr[0]]), 1);
-		if (p)
-			ft_putstr(" \033[0m");
 		ijr[0]++;
 		ijr[1]++;
 	}
 	free(map);
 }
 
-void				print_b_lst(t_list *b_lst, int nb, int size, int p)
+void				print_b_lst(t_list *b_lst, int nb, int size)
 {
 	int				i;
 	long			bit;
@@ -75,7 +64,7 @@ void				print_b_lst(t_list *b_lst, int nb, int size, int p)
 		free_block(&tmp);
 	}
 	free_block(&b_lst);
-	print_map(map, size, p);
+	print_map(map, size);
 }
 
 static uint64_t		check_spot(int shift, uint64_t map, uint64_t bits)

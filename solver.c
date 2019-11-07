@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   solver.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wkorande <wkorande@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: srouhe <srouhe@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 13:12:20 by srouhe            #+#    #+#             */
-/*   Updated: 2019/11/06 13:57:39 by wkorande         ###   ########.fr       */
+/*   Updated: 2019/11/07 11:50:49 by srouhe           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,12 +118,13 @@ int				solve(t_list *block_list, uint64_t map, int size, int i, int num_blocks)
 	int				shift;
 	t_list			*cur_lst;
 	t_block			*cur_blk;
-
+	int				shiftmax;
 	if (i == num_blocks)
 		return (1);
 	shift = 0;
 	cur_lst = block_list;
-	while (shift < size * size)
+	shiftmax = (size + 1) * (size + 1);
+	while (shift < shiftmax)
 	{
 		cur_blk = cur_lst->content;
 		if ((cur_blk->pos = check_spot(shift, map, cur_blk->bits)))

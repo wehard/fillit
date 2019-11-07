@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   reader.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wkorande <wkorande@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: srouhe <srouhe@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/05 11:25:41 by wkorande          #+#    #+#             */
-/*   Updated: 2019/11/06 12:21:43 by wkorande         ###   ########.fr       */
+/*   Updated: 2019/11/07 12:36:00 by srouhe           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 static	uint64_t	shift_bits_64(uint64_t bits)
 {
+	if (!bits)
+		return (bits);
 	while (!(bits & 0xFF00000000000000))
 		bits = bits << 8;
 	while (!(bits & 0x8080808000000000))
@@ -46,9 +48,10 @@ static uint64_t		get_bits(char *binary)
 		if (*binary++ == '#')
 			total += 1;
 	}
-	//write(1, "shifted bits:\n", 14);
-	total = shift_bits_64(total);
-	return (total);
+	if (!validate_block(total))
+		return (0);
+	else
+		return (shift_bits_64(total));
 }
 
 t_list				*read_blocks(const int fd, int *n_blocks)
@@ -56,7 +59,6 @@ t_list				*read_blocks(const int fd, int *n_blocks)
 	char		buf[BUF_SIZE + 1];
 	int			i;
 	int			n_read;
-	int			g_index;
 	uint64_t	bits;
 	t_list		*blocks;
 	t_list		*current;
@@ -65,17 +67,13 @@ t_list				*read_blocks(const int fd, int *n_blocks)
 	blocks = ft_lstnew(0, 0);
 	current = blocks;
 	i = 0;
-	while (i < 26 && (n_read = read(fd, buf, BUF_SIZE)) > 0)
+	while ((n_read = read(fd, buf, BUF_SIZE)) > 0)
 	{
 		buf[n_read] = '\0';
-		//printf("buffer:\n%s\n", buf);
 		bits = get_bits(buf);
-		if (buf[n_read - 1] != '\n')
-			return (NULL);
-		if ((g_index = validate_block(bits)) < 0)
+		if (buf[n_read - 1] != '\n' || !bits)
 			return (NULL);
 		current->content = create_block('A' + i, bits, 0);
-		//printf("bits as decimal: %llu index: %c\n\n", test->bits, test->id);
 		current->content_size = sizeof(current->content);
 		current->next = ft_lstnew(0, 0);
 		current = current->next;

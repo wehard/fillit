@@ -6,20 +6,19 @@
 /*   By: srouhe <srouhe@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/03 14:32:53 by srouhe            #+#    #+#             */
-/*   Updated: 2019/11/07 12:14:43 by srouhe           ###   ########.fr       */
+/*   Updated: 2019/11/07 13:31:52 by srouhe           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
-#include "block.h"
 
 static int			throw_error(char *estr)
 {
-	ft_putstr_fd(estr, 2);
+	ft_putendl_fd(estr, 2);
 	return (1);
 }
 
-int		ft_sqrt(int nb)
+static int			ft_sqrt_next(int nb)
 {
 	int	i;
 	int sqrt;
@@ -43,33 +42,42 @@ int		ft_sqrt(int nb)
 	return (0);
 }
 
+/*static void	free_blocks(t_list **alst)
+{
+	t_list	*tmp;
+
+	if (alst && *alst)
+	{
+		while (*alst)
+		{
+			*alst = (*alst)->next;
+			free(tmp);
+			tmp = NULL;
+		}
+	}
+}*/
+
 int					main(int ac, char **av)
 {
 	int			fd;
-	int			num_blocks;
-	int			size;
-	t_list		*block_list;
+	int			params[2];
+	t_list		*b_lst;
 
 	if (ac != 2)
-		return (throw_error("usage: ./fillit input_file"));
+		return (throw_error("usage: ./fillit file"));
 	if ((fd = open(av[1], O_RDONLY)) < 0)
-	{
 		return (throw_error("error opening file"));
-	}
-	if (!(block_list = read_blocks(fd, &num_blocks)))
+	if (!(b_lst = read_blocks(fd, &params[1])))
 	{
 		close(fd);
 		return (throw_error("block error"));
 	}
 	close(fd);
-	size = ft_sqrt(num_blocks * 4);
-	//printf("Blocks: %d sqrt: %d\n", num_blocks, size);
-	while (!(solve(block_list, g_map_configs[size - 2], size, 0, num_blocks)) && size - 2 < 9)
-	{
-		//printf("Incrementing size from %d to %d\n", size, size + 1);
-		size++;
-	}
-	print_block_list(block_list, num_blocks, size, FALSE);
-	//ft_lstdel(&block_list, &delete_block);
+	params[0] = ft_sqrt_next(params[1] * 4);
+	while (!(solve(b_lst, g_map_configs[params[0] - 2], params, 0)) &&
+			params[0] - 2 < 9)
+		params[0]++;
+	print_b_lst(b_lst, params[1], params[0], FALSE);
+	//free_blocks(&b_lst);
 	return (0);
 }

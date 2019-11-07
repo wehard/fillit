@@ -6,7 +6,7 @@
 #    By: srouhe <srouhe@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/03 14:53:22 by srouhe            #+#    #+#              #
-#    Updated: 2019/11/07 11:25:41 by srouhe           ###   ########.fr        #
+#    Updated: 2019/11/07 13:38:14 by srouhe           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,26 +21,20 @@ SRCS = 	main.c\
 
 LIBDIR = libft
 
-OBJ = $(patsubst %.c, %.o, $(SRCS))
-
 INCL = .
 
 all: $(NAME)
 
 $(NAME):
-	make -C $(LIBDIR)
-	clang $(FLAGS) -o $(NAME) $(SRCS) -I $(INCL) -I $(LIBDIR)/includes -L$(LIBDIR) -lft
-
-debug:
-	make -C $(LIBDIR)
-	clang -g -o $(NAME) $(SRCS) -I $(INCL) -I $(LIBDIR)/includes -L$(LIBDIR) -lft
+	@make -C $(LIBDIR) && make clean -C $(LIBDIR)
+	@clang $(FLAGS) -o $(NAME) $(SRCS) -I $(INCL) -I $(LIBDIR)/includes -L$(LIBDIR) -lft
 
 clean:
-	make clean -C $(LIBDIR)
+	@make clean -C $(LIBDIR)
 	@/bin/rm -f *.o
 
 fclean: clean
-	make fclean -C $(LIBDIR)
+	@make fclean -C $(LIBDIR)
 	@/bin/rm -f $(NAME)
 
 re: fclean all

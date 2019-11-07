@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fillit.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wkorande <wkorande@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: srouhe <srouhe@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/03 14:35:38 by srouhe            #+#    #+#             */
-/*   Updated: 2019/11/06 13:55:11 by wkorande         ###   ########.fr       */
+/*   Updated: 2019/11/07 13:32:36 by srouhe           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,25 @@
 # define TRUE 1
 # define FALSE 0
 
-typedef struct	s_map
+typedef struct			s_block
 {
-	int			size;
-	uint64_t	map;
-}				t_map;
+	char				id;
+	uint64_t			bits;
+	uint64_t			pos;
+}						t_block;
 
-int				solve(t_list *block_list, uint64_t map, int size, int i, int num_blocks);
-void			print_binary_map(uint64_t map);
-void			print_map(char *map, int size, int pretty);
-void			print_block_list(t_list *block_list, int n_blocks , int size, int pretty);
+extern	uint64_t		g_valid_blocks[19];
+extern	uint64_t		g_map_configs[7];
 
-t_list			*read_blocks(const int fd, int *size);
+int						solve(t_list *b_lst, uint64_t map, int *params, int i);
+void					print_binary_map(uint64_t map);
+void					print_map(char *map, int size, int p);
+void					print_b_lst(t_list *b_lst, int nb, int size, int p);
+
+t_list					*read_blocks(const int fd, int *size);
+
+t_block					*create_block(char id, uint64_t bits);
+int						validate_block(uint64_t bits);
+void					delete_block(void *block);
 
 #endif

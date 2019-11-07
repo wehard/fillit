@@ -3,3 +3,9 @@
 fillit
 fillit.dSYM
 libft/libft.a
+.vscode
+correct_compare
+correct_file
+error_file
+samples
+README.md

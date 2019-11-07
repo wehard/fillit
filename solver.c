@@ -6,31 +6,11 @@
 /*   By: srouhe <srouhe@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 13:12:20 by srouhe            #+#    #+#             */
-/*   Updated: 2019/11/07 11:50:49 by srouhe           ###   ########.fr       */
+/*   Updated: 2019/11/07 13:34:06 by srouhe           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
-#include "block.h"
-
-void				print_binary_map(uint64_t map)
-{
-	int				i;
-	long			bit;
-
-	i = 64;
-	write(1, "RESULT MAP:\n", 12);
-	while (i--)
-	{
-		bit = (map >> i & 1) + '0';
-		write(1, &bit, 1);
-		if (i % 8 == 0)
-			write(1, "\n", 1);
-		else
-			write(1, " ", 1);
-	}
-	write(1, "\n", 1);
-}
 
 static void			set_term_color(char c)
 {
@@ -39,14 +19,12 @@ static void			set_term_color(char c)
 	ft_putstr("m");
 }
 
-void			print_map(char *map, int size, int pretty)
+void				print_map(char *map, int size, int p)
 {
 	int i;
 	int j;
-	int len;
 	int	r;
 
-	len = (size + 1) * (size + 1);
 	i = 0;
 	j = 0;
 	r = 0;
@@ -62,17 +40,17 @@ void			print_map(char *map, int size, int pretty)
 			r++;
 			continue ;
 		}
-		if(pretty && map[i] != '.')
+		if (p && map[i] != '.')
 			set_term_color(map[i]);
 		write(1, &(map[i]), 1);
-		if (pretty)
+		if (p)
 			ft_putstr(" \033[0m");
 		i++;
 		j++;
 	}
 }
 
-void				print_block_list(t_list *block_list, int n_blocks , int size, int pretty)
+void				print_b_lst(t_list *b_lst, int nb, int size, int p)
 {
 	int				i;
 	long			bit;
@@ -81,10 +59,9 @@ void				print_block_list(t_list *block_list, int n_blocks , int size, int pretty
 
 	map = ft_strnew(64);
 	ft_memset(map, '.', 64);
-
-	while (block_list->next && n_blocks--)
+	while (b_lst->next && nb--)
 	{
-		cur_blk = block_list->content;
+		cur_blk = b_lst->content;
 		i = 63;
 		while (i)
 		{
@@ -93,44 +70,37 @@ void				print_block_list(t_list *block_list, int n_blocks , int size, int pretty
 				map[63 - i] = cur_blk->id;
 			i--;
 		}
-		block_list = block_list->next;
+		b_lst = b_lst->next;
 	}
-	print_map(map, size, pretty);
+	print_map(map, size, p);
 	free(map);
 }
-
-
 
 static uint64_t		check_spot(int shift, uint64_t map, uint64_t bits)
 {
 	bits = bits >> shift;
 	if (map & bits)
-	{
-		//printf("No fit\n");
 		return (0);
-	}
-	//printf("Placing bit\n");
 	return (bits);
 }
 
-int				solve(t_list *block_list, uint64_t map, int size, int i, int num_blocks)
+int					solve(t_list *b_lst, uint64_t map, int *params, int i)
 {
 	int				shift;
-	t_list			*cur_lst;
-	t_block			*cur_blk;
 	int				shiftmax;
-	if (i == num_blocks)
+	t_block			*cur_blk;
+
+	if (i == params[1])
 		return (1);
 	shift = 0;
-	cur_lst = block_list;
-	shiftmax = (size + 1) * (size + 1);
+	shiftmax = (params[0] + 1) * (params[0] + 1);
 	while (shift < shiftmax)
 	{
-		cur_blk = cur_lst->content;
+		cur_blk = b_lst->content;
 		if ((cur_blk->pos = check_spot(shift, map, cur_blk->bits)))
 		{
 			map |= cur_blk->pos;
-			if (solve(cur_lst->next, map, size, i + 1, num_blocks))
+			if (solve(b_lst->next, map, params, i + 1))
 				return (1);
 			else
 			{

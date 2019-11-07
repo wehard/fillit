@@ -6,7 +6,7 @@
 /*   By: srouhe <srouhe@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/05 11:25:41 by wkorande          #+#    #+#             */
-/*   Updated: 2019/11/07 15:46:43 by srouhe           ###   ########.fr       */
+/*   Updated: 2019/11/07 16:00:17 by srouhe           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ t_list				*read_blocks(const int fd, int *nb)
 			current = blocks;
 		}
 		buf[n_read] = '\0';
-		printf("len: %zu\n", ft_strlen(buf));
+		//printf("len: %zu\n", ft_strlen(buf));
 		bits = get_bits(buf);
 		if (buf[n_read - 1] != '\n' || (buf[0] != '.' && buf[0] != '#')
 			|| !(validate_block(bits)))
@@ -76,9 +76,9 @@ t_list				*read_blocks(const int fd, int *nb)
 		current = current->next;
 		*nb += 1;
 	}
-	if (!blocks)
+	if (!blocks || ft_strlen(buf) != 20)
 		return (NULL);
-	printf("BUFFER%s", buf);
+	//printf("BUFFER%s", buf);
 	current->next = blocks;
 	return (blocks);
 }

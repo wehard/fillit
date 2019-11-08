@@ -6,7 +6,7 @@
 /*   By: srouhe <srouhe@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/05 11:25:41 by wkorande          #+#    #+#             */
-/*   Updated: 2019/11/07 16:20:01 by srouhe           ###   ########.fr       */
+/*   Updated: 2019/11/08 14:24:39 by srouhe           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,25 +24,25 @@ static	uint64_t	shift_bits_64(uint64_t bits)
 	return (bits);
 }
 
-static uint64_t		get_bits(char *binary)
+static uint64_t		get_bits(char *bstr)
 {
 	uint64_t	bits;
 	int			i;
 
 	bits = 0;
 	i = 0;
-	while (*binary)
+	while (*bstr && (*bstr == '.' || *bstr == '#' || *bstr == '\n'))
 	{
-		if (*binary == '\n')
+		if (*bstr == '\n')
 		{
 			i = 0;
-			binary++;
+			bstr++;
 			while (i++ < 4)
 				bits *= 2;
 			continue;
 		}
 		bits *= 2;
-		if (*binary++ == '#')
+		if (*bstr++ == '#')
 			bits += 1;
 	}
 	return (shift_bits_64(bits));

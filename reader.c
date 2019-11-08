@@ -6,22 +6,32 @@
 /*   By: srouhe <srouhe@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/05 11:25:41 by wkorande          #+#    #+#             */
-/*   Updated: 2019/11/08 14:30:21 by srouhe           ###   ########.fr       */
+/*   Updated: 2019/11/08 15:08:19 by srouhe           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
-#include <stdio.h>
 
 static	uint64_t	shift_bits_64(uint64_t bits)
 {
 	if (!bits)
-		return (bits);
+		return (0);
 	while (!(bits & 0xFF00000000000000))
 		bits = bits << 8;
 	while (!(bits & 0x8080808000000000))
 		bits = bits << 1;
 	return (bits);
+}
+
+static int			validate_str(char *bstr)
+{
+	while (*bstr)
+	{
+		if (*bstr != '.' && *bstr != '#' && *bstr != '\n')
+			return (0);
+		bstr++;
+	}
+	return (1);
 }
 
 static uint64_t		get_bits(char *bstr)
@@ -31,19 +41,22 @@ static uint64_t		get_bits(char *bstr)
 
 	bits = 0;
 	i = 0;
-	while (*bstr && (*bstr == '.' || *bstr == '#' || *bstr == '\n'))
+	if (validate_str(bstr))
 	{
-		if (*bstr == '\n')
+		while (*bstr)
 		{
-			i = 0;
-			bstr++;
-			while (i++ < 4)
-				bits *= 2;
-			continue;
+			if (*bstr == '\n')
+			{
+				i = 0;
+				bstr++;
+				while (i++ < 4)
+					bits *= 2;
+				continue;
+			}
+			bits *= 2;
+			if (*bstr++ == '#')
+				bits += 1;
 		}
-		bits *= 2;
-		if (*bstr++ == '#')
-			bits += 1;
 	}
 	return (shift_bits_64(bits));
 }
@@ -62,8 +75,7 @@ t_list				*read_blocks(const int fd, int *nb)
 	{
 		buf[n_read] = '\0';
 		bits = get_bits(buf);
-		if (buf[n_read - 1] != '\n' || (buf[0] != '.' && buf[0] != '#')
-			|| !(validate_block(bits)))
+		if (buf[n_read - 1] != '\n' || !(validate_block(bits)))
 			return (NULL);
 		current->content = create_block('A' + *nb, bits);
 		current->content_size = sizeof(current->content);
@@ -71,7 +83,7 @@ t_list				*read_blocks(const int fd, int *nb)
 		current = current->next;
 		*nb += 1;
 	}
-	if (!blocks || ft_strlen(buf) != 20)
+	if (!blocks || ft_strlen(buf) != 20 || *nb >= 26)
 		return (NULL);
 	current->next = blocks;
 	return (blocks);

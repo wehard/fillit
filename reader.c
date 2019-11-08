@@ -6,7 +6,7 @@
 /*   By: srouhe <srouhe@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/05 11:25:41 by wkorande          #+#    #+#             */
-/*   Updated: 2019/11/08 14:24:39 by srouhe           ###   ########.fr       */
+/*   Updated: 2019/11/08 14:30:21 by srouhe           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ t_list				*read_blocks(const int fd, int *nb)
 
 	blocks = ft_lstnew(0, 0);
 	current = blocks;
-	while ((n_read = read(fd, buf, BUF_SIZE)) > 0)
+	while (*nb < 26 && (n_read = read(fd, buf, BUF_SIZE)) > 0)
 	{
 		buf[n_read] = '\0';
 		bits = get_bits(buf);
